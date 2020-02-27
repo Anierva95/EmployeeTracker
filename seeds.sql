@@ -23,6 +23,7 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Windl
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('RJ', 'Barrett', 6, null);
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Julius', 'Randle', 8, null);
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Rango', 'Bango', 7, null);
-
+INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Wayne', 'Ellington', 8, null);
+INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Dennis', 'Smith', 7, null);
 
 

@@ -13,3 +13,8 @@ ORDER BY id asc;
 ////////////////////////////////////////////
 
 
+*TO INSERT A PERSON*
+
+use employee_db;
+
+INSERT INTO ?? VALUES ??

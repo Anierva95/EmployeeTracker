@@ -1,10 +1,10 @@
 USE employee_db;
 
-INSERT INTO department (name) VALUES ('Sales');
-INSERT INTO department (name) VALUES ('Engineering');
-INSERT INTO department (name) VALUES ('Finance');
-INSERT INTO department (name) VALUES ('Legal');
-INSERT INTO department (name) VALUES ('Trash');
+INSERT INTO department (department_type) VALUES ('Sales');
+INSERT INTO department (department_type) VALUES ('Engineering');
+INSERT INTO department (department_type) VALUES ('Finance');
+INSERT INTO department (department_type) VALUES ('Legal');
+INSERT INTO department (department_type) VALUES ('Trash');
 
 INSERT INTO roles (title, salary, department_id) VALUES ('Sales Person', 80000.00, 1);
 INSERT INTO roles (title, salary, department_id) VALUES ('Sales Lead', 100000.00, 1);

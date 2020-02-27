@@ -1,6 +1,15 @@
-SELECT employee.first_name, employee.last_name, roles.title, roles.salary, department.department_type
+*TO SELECT VIEW ALL*
+
+use employee_db;
+
+SELECT employee.id, employee.first_name, employee.last_name, roles.title, roles.salary, department.department_type
 FROM employee
 INNER JOIN roles
 ON employee.role_id = roles.id
 INNER JOIN department
-on roles.id = department.id;
+on roles.id = department.id
+ORDER BY id asc;
+
+////////////////////////////////////////////
+
+

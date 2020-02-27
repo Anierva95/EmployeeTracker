@@ -1,0 +1,6 @@
+SELECT employee.first_name, employee.last_name, roles.title, roles.salary, department.department_type
+FROM employee
+INNER JOIN roles
+ON employee.role_id = roles.id
+INNER JOIN department
+on roles.id = department.id;

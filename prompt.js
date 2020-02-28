@@ -9,7 +9,7 @@ inquirer
     type: "list",
     message: "What would you like to do?",
     name: "action",
-    choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Department', 'Add Role', 'Add employee']
+    choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Department', 'Add Role', 'Add employee', 'Update Employee Role']
     }
 ]).then(result => {
     let action = result.action;
@@ -38,6 +38,10 @@ inquirer
 
         case 'View All Roles':
         viewAllRole();
+        break;
+
+        case 'Update Employee Role':
+        updateRole();
         break;
 
         default:
@@ -103,6 +107,14 @@ const addDepartment = () => {
 
 // Function to add a role
 const addRole = () => {
+
+connection.query("SELECT department_type FROM DEPARTMENT", (err, data) => {
+    if (err) throw err;
+    let choices = []
+    for (let i = 0; i < data.length; i++) {
+        choices.push(data[i].department_type);
+    }
+
     inquirer
     .prompt([
         {
@@ -118,17 +130,7 @@ const addRole = () => {
         {
         type: "list",
         message: "What department does this role belong to?",
-        choices: () => {
-            const choices = [];
-            connection.query("SELECT department_type FROM DEPARTMENT", (err, data) => {
-                if (err) throw err;
-        
-                for (let i = 0; i < data.length; i++) {
-                    choices.push(data[i].department_type);
-                }
-        
-                return choices
-            })},
+        choices: choices,
         name: "employeeRole"
         }
     ]).then(result => {
@@ -139,8 +141,9 @@ const addRole = () => {
 
         connection.query(query, [result.employeeFirstName, result.employeeLastName, role, null], function(err) {if (err) throw err})
         restart();
-    })};
 
+
+    })})};
 
 
 
@@ -210,20 +213,11 @@ const convertRoleToId = (role) => {
       }
 }
 
+// Function to update role
+const updateRole = () => {
+    console.log("role!");
+}
 
 //Initialize default function
-// restart();
+restart();
 
-getchoices = () => {
-    const choices = [];
-    connection.query("SELECT department_type FROM DEPARTMENT", (err, data) => {
-        if (err) throw err;
-
-        for (let i = 0; i < data.length; i++) {
-            choices.push(data[i].department_type);
-        }
-
-        return choices
-    })}
-
-    getchoices();

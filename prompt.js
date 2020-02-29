@@ -86,9 +86,11 @@ connection.query("SELECT title FROM ROLES", (err, data) => {
         }
     ]).then(result => {
 
+        const roleId = choices.indexOf(result.employeeRole) + 1;
+
         let query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?);"
 
-        connection.query(query, [result.employeeFirstName, result.employeeLastName, role, null], function(err) {if (err) throw err})
+        connection.query(query, [result.employeeFirstName, result.employeeLastName, roleId, null], function(err) {if (err) throw err})
         restart();
 })})};
 
@@ -189,7 +191,29 @@ const viewAllDepartment = () => {
 
 // Function to update role
 const updateRole = () => {
-    console.log("role!");
+
+    connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;", (err, data) => {
+
+        if (err) throw err;
+        let choices = [];
+        for (let i = 0; i < data.length; i++) {
+            choices.push(data[i].name);
+        }
+
+        console.table(choices);
+
+    inquirer
+    .prompt([
+        {
+        type: "list",
+        message: "Which employee's role do you wish to change?",
+        name: "roleTitle",
+        choices: choices
+        },
+    ]).then(result => {
+        let query = ""
+
+    })});
 }
 
 //Initialize default function

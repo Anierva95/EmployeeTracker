@@ -192,28 +192,47 @@ const viewAllDepartment = () => {
 // Function to update role
 const updateRole = () => {
 
-    connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;", (err, data) => {
+connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;", (err, data) => {
+    if (err) throw err;
+    let choices = [];
+    for (let i = 0; i < data.length; i++) {
+        choices.push(data[i].name);
+    }
 
+connection.query("SELECT title FROM ROLES", (err, data) => {
+    if (err) throw err;
+    let roleTitles = []
+    for (let i = 0; i < data.length; i++) {
+        roleTitles.push(data[i].title);
+    }
+
+inquirer
+.prompt([
+    {
+    type: "list",
+    message: "Which employee's role do you wish to change?",
+    name: "changeEmployeeRole",
+    choices: choices
+    },
+{
+    type: "list",
+    message: "What would you like to change their role to?",
+    name: "roleTitle",
+    choices: roleTitles
+    },
+]).then(result => {
+    
+        // Finds the department id by finding index of input
+        const roleId = roleTitles.indexOf(result.roleTitle) + 1;
+        console.log(roleId);
+
+    let query = "UPDATE employee SET role_id = (?) WHERE CONCAT(first_name, ' ', last_name) = (?);";
+    connection.query(query, [roleId, result.changeEmployeeRole], (err, data) => {
         if (err) throw err;
-        let choices = [];
-        for (let i = 0; i < data.length; i++) {
-            choices.push(data[i].name);
-        }
+        restart();
+    });
 
-        console.table(choices);
-
-    inquirer
-    .prompt([
-        {
-        type: "list",
-        message: "Which employee's role do you wish to change?",
-        name: "roleTitle",
-        choices: choices
-        },
-    ]).then(result => {
-        let query = ""
-
-    })});
+})})});
 }
 
 //Initialize default function

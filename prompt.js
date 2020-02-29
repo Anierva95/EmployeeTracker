@@ -53,6 +53,14 @@ inquirer
 
 // Function to add an employee
 const addEmployee = () => {
+
+connection.query("SELECT title FROM ROLES", (err, data) => {
+    if (err) throw err;
+    let choices = []
+    for (let i = 0; i < data.length; i++) {
+        choices.push(data[i].title);
+    }
+
     inquirer
     .prompt([
         {
@@ -68,7 +76,7 @@ const addEmployee = () => {
         {
         type: "list",
         message: "What is this employee's role?",
-        choices: ["Sales Person", "Sales Lead", "Lawyer", "Lead Engineer", "Accountant", "Legal Team Lead", "Software Engineer", "Janitor"],
+        choices: choices,
         name: "employeeRole"
         },
         {
@@ -78,13 +86,11 @@ const addEmployee = () => {
         }
     ]).then(result => {
 
-        const role = convertRoleToId(result.employeeRole);
-
         let query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?);"
 
         connection.query(query, [result.employeeFirstName, result.employeeLastName, role, null], function(err) {if (err) throw err})
         restart();
-    })};
+})})};
 
 
 // Function to add department
@@ -135,15 +141,20 @@ connection.query("SELECT department_type FROM DEPARTMENT", (err, data) => {
         }
     ]).then(result => {
 
-        const role = convertRoleToId(result.employeeRole);
 
-        let query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?);"
+        // Finds the department id by finding index of input
+        const depId = choices.indexOf(result.employeeRole) + 1;
+        
+        // Create SQL query
+        let query = "INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);"
 
-        connection.query(query, [result.employeeFirstName, result.employeeLastName, role, null], function(err) {if (err) throw err})
+        connection.query(query, [result.roleTitle, result.roleSalary, depId], function(err) {if (err) throw err})
+
+        // Bring user back to original prompt
         restart();
 
 
-    })})};
+})})};
 
 
 
@@ -175,43 +186,6 @@ const viewAllDepartment = () => {
         restart();
 })};
 
-// Function to convert Role to respective ID
-const convertRoleToId = (role) => {
-
-    switch(role) {
-
-        case 'Sales Person':
-        return 1; 
-
-        case 'Sales Lead':
-        return 2; 
-        break;
-
-        case 'Lawyer':
-        return 3; 
-        break;
-
-        case 'Lead Engineer':
-        return 4; 
-        break;
-        
-        case 'Accountant':
-        return 5; 
-        break;
-
-        case 'Legal Team Lead':
-        return 6; 
-        break;
-
-        case 'Software Engineer':
-        return 7; 
-        break;
-
-        case 'Janitor':
-        return 8; 
-        break;
-      }
-}
 
 // Function to update role
 const updateRole = () => {

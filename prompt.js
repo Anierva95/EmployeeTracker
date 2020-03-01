@@ -9,7 +9,7 @@ inquirer
     type: "list",
     message: "What would you like to do?",
     name: "action",
-    choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Department', 'Add Role', 'Add employee', 'Update Employee Role']
+    choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Department', 'Add Role', 'Add employee', 'Update Employee Role', 'Delete Department', 'Delete Role', 'Delete Employee']
     }
 ]).then(result => {
     let action = result.action;
@@ -42,6 +42,18 @@ inquirer
 
         case 'Update Employee Role':
         updateRole();
+        break;
+
+        case 'Delete Department':
+        deleteDepartment();
+        break;
+
+        case 'Delete Role':
+        console.log("Delete Role");
+        break;
+
+        case 'Delete Employee':
+        console.log("Delete Employee");
         break;
 
         default:
@@ -235,6 +247,33 @@ inquirer
 })})});
 }
 
+// Function to delete Department
+const deleteDepartment = () => {
+    let query = "SELECT department_type from department";
+    const departments = [];
+connection.query(query, (err, data) => {
+    if (err) throw err;
+    for (let i = 0; i < data.length; i++) {
+        departments.push(data[i].department_type);
+    }
+inquirer
+.prompt([
+    {
+    type: "list",
+    message: "Which department which you like to delete?",
+    name: "departmentDelete",
+    choices: departments
+    },
+]).then(result => {
+    console.log(result.departmentDelete);
+    let query = "DELETE FROM DEPARTMENT WHERE DEPARTMENT_TYPE = ?";
+    connection.query(query, [result.departmentDelete], (err, data) => {
+        if (err) throw err;
+    });
+    restart();
+});
+})};
+ 
 //Initialize default function
 restart();
 

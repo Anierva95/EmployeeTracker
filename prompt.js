@@ -53,7 +53,7 @@ inquirer
         break;
 
         case 'Delete Employee':
-        console.log("Delete Employee");
+        deleteEmployee();
         break;
 
         default:
@@ -288,7 +288,7 @@ inquirer
 .prompt([
     {
     type: "list",
-    message: "Which role? which you like to delete?",
+    message: "Which role which you like to delete?",
     name: "roleDelete",
     choices: roles
     },
@@ -303,27 +303,27 @@ inquirer
 })};
 
 // Function to delete employee
-const deleteRole = () => {
-    let query = "SELECT title from roles";
-    const roles = [];
+const deleteEmployee = () => {
+    let query = "SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee";
+    const employees = [];
 connection.query(query, (err, data) => {
-    console.log(data);
     if (err) throw err;
     for (let i = 0; i < data.length; i++) {
-        roles.push(data[i].title);
+        employees.push(data[i]);
     }
+    console.table(employees);
 inquirer
 .prompt([
     {
     type: "list",
-    message: "Which role? which you like to delete?",
-    name: "roleDelete",
-    choices: roles
+    message: "Which employee which you like to delete?",
+    name: "employeeDelete",
+    choices: employees
     },
 ]).then(result => {
-    console.log(result.roleDelete);
-    let query = "DELETE FROM roles WHERE roles.title = ?";
-    connection.query(query, [result.roleDelete], (err, data) => {
+    console.log(result.employeeDelete);
+    let query = "DELETE FROM employee WHERE CONCAT(first_name, ' ', last_name) = ?";
+    connection.query(query, [result.employeeDelete], (err, data) => {
         if (err) throw err;
     });
     restart();

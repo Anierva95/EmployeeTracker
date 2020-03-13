@@ -49,7 +49,7 @@ inquirer
         break;
 
         case 'Delete Role':
-        console.log("Delete Role");
+        deleteRole();
         break;
 
         case 'Delete Employee':
@@ -268,6 +268,33 @@ inquirer
     console.log(result.departmentDelete);
     let query = "DELETE FROM DEPARTMENT WHERE DEPARTMENT_TYPE = ?";
     connection.query(query, [result.departmentDelete], (err, data) => {
+        if (err) throw err;
+    });
+    restart();
+});
+})};
+
+const deleteRole = () => {
+    let query = "SELECT title from roles";
+    const roles = [];
+connection.query(query, (err, data) => {
+    console.log(data);
+    if (err) throw err;
+    for (let i = 0; i < data.length; i++) {
+        roles.push(data[i].title);
+    }
+inquirer
+.prompt([
+    {
+    type: "list",
+    message: "Which role? which you like to delete?",
+    name: "roleDelete",
+    choices: roles
+    },
+]).then(result => {
+    console.log(result.roleDelete);
+    let query = "DELETE FROM roles WHERE roles.title = ?";
+    connection.query(query, [result.roleDelete], (err, data) => {
         if (err) throw err;
     });
     restart();

@@ -336,9 +336,10 @@ inquirer
 
 // Function to delete employee
 const salaryByDepartment = () => {
-    let query = "SELECT department_type from department";
+    let query = "SELECT department_type, id from department";
     const departments = [];
 connection.query(query, (err, data) => {
+    console.log(data);
     if (err) throw err;
     for (let i = 0; i < data.length; i++) {
         departments.push(data[i].department_type);

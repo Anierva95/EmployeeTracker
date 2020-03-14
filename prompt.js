@@ -57,7 +57,7 @@ inquirer
         break;
 
         case 'View Salary by Department':
-        console.log("View salary by department")
+        salaryByDepartment();
         break;
 
         default:
@@ -238,9 +238,9 @@ inquirer
     },
 ]).then(result => {
     
-        // Finds the department id by finding index of input
-        const roleId = roleTitles.indexOf(result.roleTitle) + 1;
-        console.log(roleId);
+    // Finds the department id by finding index of input
+    const roleId = roleTitles.indexOf(result.roleTitle) + 1;
+    console.log(roleId);
 
     let query = "UPDATE employee SET role_id = (?) WHERE CONCAT(first_name, ' ', last_name) = (?);";
     connection.query(query, [roleId, result.changeEmployeeRole], (err, data) => {
@@ -352,8 +352,13 @@ inquirer
     choices: departments
     },
 ]).then(result => {
-    console.log(result.employeeDelete);
-    let query = "DELETE FROM employee WHERE CONCAT(first_name, ' ', last_name) = ?";
+
+    // Finds the department id by finding index of input
+    const departmentId = departments.indexOf(result.departmentSalary) + 1;
+    console.log(departmentId);
+
+    console.log(result.departmentSalary);
+    let query = "SELECT salary FROM roles WHERE deparment_id = ?";
     connection.query(query, [result.employeeDelete], (err, data) => {
         if (err) throw err;
     });

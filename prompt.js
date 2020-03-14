@@ -9,7 +9,7 @@ inquirer
     type: "list",
     message: "What would you like to do?",
     name: "action",
-    choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Department', 'Add Role', 'Add employee', 'Update Employee Role', 'Delete Department', 'Delete Role', 'Delete Employee']
+    choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Department', 'Add Role', 'Add employee', 'Update Employee Role', 'Delete Department', 'Delete Role', 'Delete Employee', 'View Salary by Department']
     }
 ]).then(result => {
     let action = result.action;
@@ -54,6 +54,10 @@ inquirer
 
         case 'Delete Employee':
         deleteEmployee();
+        break;
+
+        case 'View Salary by Department':
+        console.log("View salary by department")
         break;
 
         default:

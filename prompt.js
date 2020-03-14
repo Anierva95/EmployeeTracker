@@ -333,6 +333,33 @@ inquirer
     restart();
 });
 })};
+
+// Function to delete employee
+const salaryByDepartment = () => {
+    let query = "SELECT department_type from department";
+    const departments = [];
+connection.query(query, (err, data) => {
+    if (err) throw err;
+    for (let i = 0; i < data.length; i++) {
+        departments.push(data[i].department_type);
+    }
+inquirer
+.prompt([
+    {
+    type: "list",
+    message: "Which department's salary whould you like to see?",
+    name: "departmentSalary",
+    choices: departments
+    },
+]).then(result => {
+    console.log(result.employeeDelete);
+    let query = "DELETE FROM employee WHERE CONCAT(first_name, ' ', last_name) = ?";
+    connection.query(query, [result.employeeDelete], (err, data) => {
+        if (err) throw err;
+    });
+    restart();
+});
+})};
  
 //Initialize default function
 restart();
